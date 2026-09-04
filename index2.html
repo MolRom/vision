@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Centre commercial MoléonLangon — Trafic</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #21262d;
+    --text-primary: #e6edf3;
+    --text-muted: #7d8590;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --bar-neutral: #30363d;
+    /* safe area for notched phones */
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    min-height: 100svh;
+    /* account for notch/home bar */
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+    overscroll-behavior-y: none;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  .header {
+    padding: 24px 20px 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .title-block { flex: 1; min-width: 0; }
+
+  .site-name {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  h1 strong { font-weight: 600; }
+
+  .badge {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+    text-transform: uppercase;
+  }
+
+  /* KPI pill — right side of header */
+  .kpi-pill {
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    text-align: right;
+    min-width: 120px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .kpi-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    white-space: nowrap;
+  }
+
+  /* ── TABS ───────────────────────────────────────────────── */
+  .tabs-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -20px;
+    padding: 0 20px;
+  }
+  .tabs-wrap::-webkit-scrollbar { display: none; }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    align-items: flex-end;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .tab {
+    padding: 12px 20px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    position: relative;
+    bottom: -1px;
+    font-family: 'DM Sans', sans-serif;
+    /* large tap target */
+    min-width: 64px;
+    text-align: center;
+    transition: color 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tab.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--blue);
+  }
+
+  /* ── MAIN ───────────────────────────────────────────────── */
+  .main { padding: 20px 20px 40px; }
+
+  /* partial notice */
+  .partial-notice {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background: rgba(88,166,255,0.05);
+    border: 1px solid rgba(88,166,255,0.12);
+    border-radius: 8px;
+  }
+  .partial-notice.show { display: flex; }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* ── CHART ──────────────────────────────────────────────── */
+  .chart-wrap {
+    position: relative;
+    height: 220px;
+    margin-bottom: 32px;
+  }
+
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    touch-action: none;
+  }
+
+  /* ── VARIATION BARS ─────────────────────────────────────── */
+  .variation-title {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .variation-title em { color: var(--blue); font-style: normal; }
+
+  /* scrollable row of bars on mobile */
+  .bars-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -20px;
+    padding: 0 20px 4px;
+  }
+  .bars-scroll::-webkit-scrollbar { display: none; }
+
+  .bars-grid {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    height: 110px;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    height: 100%;
+    justify-content: flex-end;
+    width: 42px;
+    flex-shrink: 0;
+  }
+
+  .bar-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .bar-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .bar-pct.pos { color: var(--green); }
+  .bar-pct.neg { color: var(--red); }
+  .bar-pct.na  { color: var(--text-muted); }
+
+  .bar-visual {
+    width: 100%;
+    min-height: 3px;
+    border-radius: 3px 3px 0 0;
+  }
+  .bar-visual.pos { background: var(--green); }
+  .bar-visual.neg { background: var(--red); opacity: 0.85; }
+  .bar-visual.na  { background: var(--bar-neutral); }
+
+  .no-prev {
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 24px 0;
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  /* ── DESKTOP overrides (keep usable on wider screens too) ─ */
+  @media (min-width: 600px) {
+    .header { padding: 32px 36px 0; }
+    .main { padding: 32px 36px 48px; }
+    .tabs-wrap { margin: 0 -36px; padding: 0 36px; }
+    .bars-scroll { margin: 0 -36px; padding: 0 36px 4px; }
+    h1 { font-size: 28px; white-space: normal; }
+    .kpi-value { font-size: 28px; }
+    .chart-wrap { height: 280px; }
+    .bar-col { width: 52px; }
+  }
+
+  @media (min-width: 900px) {
+    .header { padding: 40px 48px 0; position: static; }
+    .main { padding: 40px 48px 60px; }
+    .tabs-wrap { margin: 0 -48px; padding: 0 48px; }
+    .bars-scroll { overflow-x: visible; margin: 0; padding: 0; }
+    .bars-grid { width: auto; min-width: auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; }
+    .bar-col { width: auto; }
+    .chart-wrap { height: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="title-block">
+      <div class="site-name">Dashboard Trafic</div>
+      <h1>CC <strong>MoléonLangon</strong></h1>
+      <div class="badge">Galerie &amp; Promenade</div>
+    </div>
+    <div class="kpi-pill">
+      <div class="kpi-label">Total <span id="year-range-label">—</span></div>
+      <div class="kpi-value" id="total-display">—</div>
+      <div class="kpi-sub" id="total-sub-display"></div>
+    </div>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs"></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="partial-notice" id="partial-notice">
+    <div class="dot"></div>
+    <span id="partial-text"></span>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="mainChart"></canvas>
+  </div>
+
+  <div id="variation-section"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const rawMonthly = {
+  2023: [null,null,null,null,null,null,null,null,304400,339700,287300,428700],
+  2024: [274900,240600,252700,234800,255900,265600,290200,306600,300400,294900,313500,414100],
+  2025: [296400,254200,259800,249400,277500,273200,298000,298600,277700,301100,293700,389200],
+  2026: [308100,278100,264800,274900,275400,296200,318800,null,null,null,null,null]
+};
+
+const months = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+const years  = [2023,2024,2025,2026];
+let currentYear = 2026;
+let chartInstance = null;
+
+function totalForYear(y) {
+  return (rawMonthly[y]||[]).filter(v=>v!=null).reduce((a,b)=>a+b,0);
+}
+function pct(c,p) {
+  if(c==null||p==null||p===0) return null;
+  return ((c-p)/p)*100;
+}
+function yearRange(y) {
+  const d = rawMonthly[y]||[];
+  const indices = d.map((v,i)=>v!=null?i:-1).filter(i=>i>=0);
+  return { first: months[indices[0]], last: months[indices[indices.length-1]], count: indices.length };
+}
+
+// ── TABS
+function buildTabs() {
+  const c = document.getElementById('tabs');
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.className = 'tab'+(y===currentYear?' active':'');
+    btn.textContent = y;
+    btn.addEventListener('click', ()=>selectYear(y));
+    c.appendChild(btn);
+  });
+}
+function selectYear(y) {
+  currentYear = y;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',parseInt(t.textContent)===y));
+  render();
+}
+
+// ── CHART
+function buildChart(y) {
+  const data=rawMonthly[y], labels=[], values=[];
+  data.forEach((v,i)=>{ if(v!=null){labels.push(months[i]);values.push(v);} });
+  const ctx=document.getElementById('mainChart').getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,0,280);
+  grad.addColorStop(0,'rgba(88,166,255,0.2)');
+  grad.addColorStop(1,'rgba(88,166,255,0)');
+  if(chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx,{
+    type:'line',
+    data:{ labels, datasets:[{
+      data: values,
+      borderColor:'#58a6ff',
+      backgroundColor: grad,
+      borderWidth: 2,
+      pointRadius: 5,
+      pointBackgroundColor:'#58a6ff',
+      pointBorderColor:'#0d1117',
+      pointBorderWidth: 2,
+      pointHoverRadius: 5,
+      fill: true,
+      tension: 0.35
+    }]},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{enabled:false} },
+      scales:{
+        x:{
+          grid:{color:'rgba(255,255,255,0.04)',drawTicks:false},
+          border:{display:false},
+          ticks:{color:'#7d8590',font:{family:'DM Sans',size:11},padding:6,maxRotation:0}
+        },
+        y:{
+          grid:{color:'rgba(255,255,255,0.04)',drawTicks:false},
+          border:{display:false},
+          ticks:{
+            color:'#7d8590',
+            font:{family:'DM Mono',size:11},
+            padding:10,
+            maxTicksLimit:5,
+            callback:v=>(v>=1000?(v/1000).toFixed(0)+' k':v)
+          }
+        }
+      }
+    }
+  });
+}
+
+// ── VARIATION BARS
+function buildVariations(y) {
+  const section = document.getElementById('variation-section');
+  section.innerHTML='';
+  const prevY=y-1;
+  if(!rawMonthly[prevY]) {
+    section.innerHTML='<div class="no-prev">Pas d\'année précédente disponible.</div>';
+    return;
+  }
+  const curr=rawMonthly[y], prev=rawMonthly[prevY];
+  const pcts=curr.map((v,i)=>(v==null||prev[i]==null)?null:pct(v,prev[i]));
+  const valid=pcts.filter(p=>p!=null);
+  if(!valid.length) {
+    section.innerHTML='<div class="no-prev">Aucun mois comparable avec l\'année précédente.</div>';
+    return;
+  }
+
+  const maxAbs=Math.max(...valid.map(Math.abs),1);
+  const BAR_MAX=60;
+
+  const title=document.createElement('div');
+  title.className='variation-title';
+  title.innerHTML=`Variation vs <em>${prevY}</em>`;
+  section.appendChild(title);
+
+  const scroll=document.createElement('div');
+  scroll.className='bars-scroll';
+  const grid=document.createElement('div');
+  grid.className='bars-grid';
+
+  months.forEach((m,i)=>{
+    const col=document.createElement('div');
+    col.className='bar-col';
+    const p=pcts[i];
+    const pctEl=document.createElement('div');
+    const barEl=document.createElement('div');
+    barEl.className='bar-visual';
+    if(p==null){
+      pctEl.className='bar-pct na'; pctEl.textContent='—';
+      barEl.classList.add('na'); barEl.style.height='3px';
+    } else {
+      const sign=p>=0?'+':'';
+      const cls=p>=0?'pos':'neg';
+      pctEl.className='bar-pct '+cls;
+      pctEl.textContent=sign+p.toFixed(1)+'%';
+      barEl.classList.add(cls);
+      barEl.style.height=Math.max(3,Math.round((Math.abs(p)/maxAbs)*BAR_MAX))+'px';
+    }
+    const lbl=document.createElement('div');
+    lbl.className='bar-label'; lbl.textContent=m;
+    col.appendChild(pctEl); col.appendChild(barEl); col.appendChild(lbl);
+    grid.appendChild(col);
+  });
+
+  scroll.appendChild(grid);
+  section.appendChild(scroll);
+}
+
+// ── HEADER
+function updateHeader(y) {
+  const total=totalForYear(y);
+  const {first,last,count}=yearRange(y);
+  const isPartial=count<12;
+  document.getElementById('year-range-label').textContent=y;
+  document.getElementById('total-display').textContent=total.toLocaleString('fr-FR');
+  document.getElementById('total-sub-display').textContent=
+    isPartial?`${first}–${last} · partiel`:`Jan–Déc`;
+  const notice=document.getElementById('partial-notice');
+  if(isPartial){
+    notice.classList.add('show');
+    document.getElementById('partial-text').textContent=
+      `Données de ${first} à ${last} ${y} (${count}/12 mois)`;
+  } else {
+    notice.classList.remove('show');
+  }
+}
+
+function render() {
+  updateHeader(currentYear);
+  buildChart(currentYear);
+  buildVariations(currentYear);
+}
+
+buildTabs();
+render();
+</script>
+</body>
+</html>
