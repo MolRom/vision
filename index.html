@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centre commercial MoléonLangon — Trafic</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #21262d;
+    --text-primary: #e6edf3;
+    --text-muted: #7d8590;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-red: #f85149;
+    --tab-active: #e6edf3;
+    --tab-inactive: #484f58;
+    --bar-pos: #3fb950;
+    --bar-neg: #f85149;
+    --bar-neutral: #30363d;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 40px 48px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .site-name {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h1 strong { font-weight: 600; }
+
+  .badge {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+  }
+
+  .total-block {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .total-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .total-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 42px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .total-value span {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .total-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    align-items: flex-end;
+  }
+
+  .tab {
+    padding: 10px 22px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--tab-inactive);
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    position: relative;
+    bottom: -1px;
+    letter-spacing: 0.01em;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .tab:hover { color: var(--text-primary); }
+
+  .tab.active {
+    color: var(--tab-active);
+    border-bottom-color: var(--accent-blue);
+  }
+
+  .tab.disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  /* MAIN */
+  .main {
+    padding: 40px 48px;
+  }
+
+  /* PARTIAL NOTICE */
+  .partial-notice {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    padding: 8px 12px;
+    background: rgba(88,166,255,0.05);
+    border: 1px solid rgba(88,166,255,0.12);
+    border-radius: 6px;
+  }
+
+  .partial-notice.show { display: flex; }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    flex-shrink: 0;
+  }
+
+  /* CHART */
+  .chart-wrap {
+    position: relative;
+    height: 320px;
+    margin-bottom: 40px;
+  }
+
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* VARIATION BARS */
+  .variation-section { margin-top: 8px; }
+
+  .variation-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .variation-title em {
+    color: var(--accent-blue);
+    font-style: normal;
+  }
+
+  .bars-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+    align-items: end;
+    height: 120px;
+  }
+
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bar-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .bar-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .bar-pct.pos { color: var(--bar-pos); }
+  .bar-pct.neg { color: var(--bar-neg); }
+  .bar-pct.na  { color: var(--text-muted); }
+
+  .bar-visual {
+    width: 100%;
+    min-height: 2px;
+    border-radius: 2px 2px 0 0;
+  }
+
+  .bar-visual.pos { background: var(--bar-pos); }
+  .bar-visual.neg { background: var(--bar-neg); opacity: 0.8; }
+  .bar-visual.na  { background: var(--bar-neutral); }
+
+  .no-prev {
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 32px 0;
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    .header { padding: 24px 20px 0; }
+    .main { padding: 24px 20px; }
+    h1 { font-size: 22px; }
+    .total-value { font-size: 28px; }
+    .header-top { flex-direction: column; }
+    .total-block { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="site-name">Dashboard Trafic</div>
+      <h1>Centre commercial <strong>MoléonLangon</strong></h1>
+      <div class="badge">Galerie &amp; Promenade</div>
+    </div>
+    <div class="total-block">
+      <div class="total-label">Visiteurs <span id="year-range-label">—</span></div>
+      <div class="total-value" id="total-display">—<span> vis.</span></div>
+      <div class="total-sub" id="total-sub-display"></div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<div class="main">
+  <div class="partial-notice" id="partial-notice">
+    <div class="dot"></div>
+    <span id="partial-text"></span>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="mainChart"></canvas>
+  </div>
+
+  <div class="variation-section" id="variation-section"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+// Monthly data keyed by year. null = month not available.
+// 2023: only Sept–Dec available (indices 8–11)
+// 2026: only Jan–Jul available (indices 0–6)
+const rawMonthly = {
+  2023: [null, null, null, null, null, null, null, null, 304400, 339700, 287300, 428700],
+  2024: [274900, 240600, 252700, 234800, 255900, 265600, 290200, 306600, 300400, 294900, 313500, 414100],
+  2025: [296400, 254200, 259800, 249400, 277500, 273200, 298000, 298600, 277700, 301100, 293700, 389200],
+  2026: [308100, 278100, 264800, 274900, 275400, 296200, 318800, null, null, null, null, null]
+};
+
+const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+const years  = [2023, 2024, 2025, 2026];
+
+let currentYear = 2026;
+let chartInstance = null;
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+function totalForYear(y) {
+  return (rawMonthly[y] || []).filter(v => v != null).reduce((a, b) => a + b, 0);
+}
+
+function pct(curr, prev) {
+  if (curr == null || prev == null || prev === 0) return null;
+  return ((curr - prev) / prev) * 100;
+}
+
+// Returns first and last non-null month labels for a year
+function yearRange(y) {
+  const d = rawMonthly[y] || [];
+  const first = months[d.findIndex(v => v != null)];
+  const last  = months[d.map((v,i) => v != null ? i : -1).filter(i => i >= 0).pop()];
+  return { first, last, count: d.filter(v => v != null).length };
+}
+
+// ─── TABS ───────────────────────────────────────────────────────────────────
+function buildTabs() {
+  const container = document.getElementById('tabs');
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (y === currentYear ? ' active' : '');
+    btn.textContent = y;
+    btn.addEventListener('click', () => selectYear(y));
+    container.appendChild(btn);
+  });
+}
+
+function selectYear(y) {
+  currentYear = y;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', parseInt(t.textContent) === y);
+  });
+  render();
+}
+
+// ─── CHART ──────────────────────────────────────────────────────────────────
+function buildChart(y) {
+  const data   = rawMonthly[y];
+  const labels = [];
+  const values = [];
+
+  data.forEach((v, i) => {
+    if (v != null) {
+      labels.push(months[i]);
+      values.push(v);
+    }
+  });
+
+  const ctx  = document.getElementById('mainChart').getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, 300);
+  grad.addColorStop(0, 'rgba(88,166,255,0.18)');
+  grad.addColorStop(1, 'rgba(88,166,255,0)');
+
+  if (chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: '#58a6ff',
+        backgroundColor: grad,
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: '#58a6ff',
+        pointBorderColor: '#0d1117',
+        pointBorderWidth: 2,
+        pointHoverRadius: 6,
+        fill: true,
+        tension: 0.35
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1c2128',
+          titleColor: '#7d8590',
+          bodyColor: '#e6edf3',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          padding: 12,
+          titleFont: { family: 'DM Sans', size: 11, weight: '500' },
+          bodyFont: { family: 'DM Mono', size: 14, weight: '500' },
+          callbacks: {
+            title: items => items[0].label,
+            label: item => ' ' + item.raw.toLocaleString('fr-FR') + ' visiteurs'
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)', drawTicks: false },
+          border: { display: false },
+          ticks: { color: '#7d8590', font: { family: 'DM Sans', size: 11 }, padding: 8 }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)', drawTicks: false },
+          border: { display: false },
+          ticks: {
+            color: '#7d8590',
+            font: { family: 'DM Mono', size: 11 },
+            padding: 12,
+            callback: v => (v >= 1000 ? (v / 1000).toFixed(0) + ' k' : v)
+          }
+        }
+      }
+    }
+  });
+}
+
+// ─── VARIATION BARS ─────────────────────────────────────────────────────────
+function buildVariations(y) {
+  const section = document.getElementById('variation-section');
+  section.innerHTML = '';
+
+  const prevY = y - 1;
+  if (!rawMonthly[prevY]) {
+    section.innerHTML = '<div class="no-prev">Pas d\'année précédente disponible pour la comparaison.</div>';
+    return;
+  }
+
+  const curr = rawMonthly[y];
+  const prev = rawMonthly[prevY];
+
+  // pct per month — only if BOTH years have data for that month
+  const pcts = curr.map((v, i) => {
+    if (v == null || prev[i] == null) return null;
+    return pct(v, prev[i]);
+  });
+
+  const validPcts = pcts.filter(p => p != null);
+  if (validPcts.length === 0) {
+    section.innerHTML = '<div class="no-prev">Aucun mois comparable avec l\'année précédente.</div>';
+    return;
+  }
+
+  const maxAbs  = Math.max(...validPcts.map(Math.abs), 1);
+  const BAR_MAX = 60;
+
+  const title = document.createElement('div');
+  title.className = 'variation-title';
+  title.innerHTML = `Variation vs <em>${prevY}</em> — mois par mois`;
+  section.appendChild(title);
+
+  const grid = document.createElement('div');
+  grid.className = 'bars-grid';
+
+  months.forEach((m, i) => {
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+
+    const p    = pcts[i];
+    const pctEl = document.createElement('div');
+    const barEl = document.createElement('div');
+    barEl.className = 'bar-visual';
+
+    if (p == null) {
+      pctEl.className = 'bar-pct na';
+      pctEl.textContent = '—';
+      barEl.classList.add('na');
+      barEl.style.height = '3px';
+    } else {
+      const sign = p >= 0 ? '+' : '';
+      const cls  = p >= 0 ? 'pos' : 'neg';
+      pctEl.className = 'bar-pct ' + cls;
+      pctEl.textContent = sign + p.toFixed(1) + '%';
+      barEl.classList.add(cls);
+      barEl.style.height = Math.max(3, Math.round((Math.abs(p) / maxAbs) * BAR_MAX)) + 'px';
+    }
+
+    const lbl = document.createElement('div');
+    lbl.className = 'bar-label';
+    lbl.textContent = m;
+
+    col.appendChild(pctEl);
+    col.appendChild(barEl);
+    col.appendChild(lbl);
+    grid.appendChild(col);
+  });
+
+  section.appendChild(grid);
+}
+
+// ─── HEADER ─────────────────────────────────────────────────────────────────
+function updateHeader(y) {
+  const total  = totalForYear(y);
+  const { first, last, count } = yearRange(y);
+  const isPartial = count < 12;
+
+  document.getElementById('year-range-label').textContent = y;
+  document.getElementById('total-display').innerHTML =
+    total.toLocaleString('fr-FR') + '<span> vis.</span>';
+  document.getElementById('total-sub-display').textContent =
+    isPartial ? `${first}–${last} · données partielles` : `Jan–Déc · année complète`;
+
+  const notice  = document.getElementById('partial-notice');
+  const noticeT = document.getElementById('partial-text');
+  if (isPartial) {
+    notice.classList.add('show');
+    noticeT.textContent = `Données disponibles de ${first} à ${last} ${y} — ${count} mois sur 12`;
+  } else {
+    notice.classList.remove('show');
+  }
+}
+
+// ─── RENDER ─────────────────────────────────────────────────────────────────
+function render() {
+  updateHeader(currentYear);
+  buildChart(currentYear);
+  buildVariations(currentYear);
+}
+
+buildTabs();
+render();
+</script>
+</body>
+</html>
