@@ -5,26 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Centre commercial MoléonLangon — Trafic</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --bg: #0d1117;
     --surface: #161b22;
-    --surface2: #1c2128;
     --border: #21262d;
     --text-primary: #e6edf3;
     --text-muted: #7d8590;
     --blue: #58a6ff;
     --green: #3fb950;
     --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #f0883e;
     --bar-neutral: #30363d;
-    /* safe area for notched phones */
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
-    --safe-left: env(safe-area-inset-left, 0px);
-    --safe-right: env(safe-area-inset-right, 0px);
   }
 
   html { -webkit-text-size-adjust: 100%; }
@@ -35,17 +33,13 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
     min-height: 100svh;
-    /* account for notch/home bar */
     padding-top: var(--safe-top);
-    padding-bottom: var(--safe-bottom);
-    padding-left: var(--safe-left);
-    padding-right: var(--safe-right);
-    overscroll-behavior-y: none;
+    padding-bottom: calc(var(--safe-bottom) + 32px);
   }
 
-  /* ── HEADER ─────────────────────────────────────────────── */
+  /* ── HEADER ── */
   .header {
-    padding: 24px 20px 0;
+    padding: 22px 20px 0;
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -58,7 +52,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .title-block { flex: 1; min-width: 0; }
@@ -69,24 +63,20 @@
     letter-spacing: 0.1em;
     color: var(--text-muted);
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
   h1 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 300;
-    line-height: 1.15;
+    line-height: 1.2;
     letter-spacing: -0.02em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
-
   h1 strong { font-weight: 600; }
 
   .badge {
     display: inline-block;
-    margin-top: 6px;
+    margin-top: 5px;
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.06em;
@@ -98,7 +88,7 @@
     text-transform: uppercase;
   }
 
-  /* KPI pill — right side of header */
+  /* KPI pill — shows SITE COMPLET total */
   .kpi-pill {
     flex-shrink: 0;
     background: var(--surface);
@@ -106,27 +96,23 @@
     border-radius: 12px;
     padding: 10px 14px;
     text-align: right;
-    min-width: 120px;
   }
-
   .kpi-label {
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.06em;
     color: var(--text-muted);
     text-transform: uppercase;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
   }
-
   .kpi-value {
     font-family: 'DM Mono', monospace;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     letter-spacing: -0.03em;
     line-height: 1;
     color: var(--text-primary);
   }
-
   .kpi-sub {
     font-size: 10px;
     color: var(--text-muted);
@@ -134,7 +120,7 @@
     white-space: nowrap;
   }
 
-  /* ── TABS ───────────────────────────────────────────────── */
+  /* ── TABS ── */
   .tabs-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -146,14 +132,12 @@
 
   .tabs {
     display: flex;
-    gap: 0;
-    align-items: flex-end;
     width: max-content;
     min-width: 100%;
   }
 
   .tab {
-    padding: 12px 20px 14px;
+    padding: 12px 20px 13px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -164,20 +148,18 @@
     position: relative;
     bottom: -1px;
     font-family: 'DM Sans', sans-serif;
-    /* large tap target */
     min-width: 64px;
     text-align: center;
     transition: color 0.15s, border-color 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
-
   .tab.active {
     color: var(--text-primary);
     border-bottom-color: var(--blue);
   }
 
-  /* ── MAIN ───────────────────────────────────────────────── */
-  .main { padding: 20px 20px 40px; }
+  /* ── MAIN ── */
+  .main { padding: 24px 20px 0; }
 
   /* partial notice */
   .partial-notice {
@@ -186,47 +168,67 @@
     gap: 8px;
     font-size: 11px;
     color: var(--text-muted);
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     padding: 8px 12px;
     background: rgba(88,166,255,0.05);
     border: 1px solid rgba(88,166,255,0.12);
     border-radius: 8px;
   }
   .partial-notice.show { display: flex; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--blue); flex-shrink:0; }
 
-  .dot {
-    width: 6px; height: 6px;
+  /* ── SECTION ── */
+  .histo-block { margin-bottom: 32px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .section-dot {
+    width: 8px; height: 8px;
     border-radius: 50%;
-    background: var(--blue);
     flex-shrink: 0;
   }
+  .section-dot.purple { background: var(--purple); }
+  .section-dot.blue   { background: var(--blue); }
+  .section-dot.orange { background: var(--orange); }
 
-  /* ── CHART ──────────────────────────────────────────────── */
-  .chart-wrap {
-    position: relative;
-    height: 220px;
-    margin-bottom: 32px;
-  }
-
-  canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    touch-action: none;
-  }
-
-  /* ── VARIATION BARS ─────────────────────────────────────── */
-  .variation-title {
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--text-muted);
+  .section-name {
+    font-size: 11px;
+    font-weight: 600;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    color: var(--text-primary);
   }
-  .variation-title em { color: var(--blue); font-style: normal; }
 
-  /* scrollable row of bars on mobile */
+  /* total pill next to section name */
+  .section-total-pill {
+    margin-left: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1px 7px;
+  }
+
+  .section-var {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .section-var.pos { color: var(--green); }
+  .section-var.neg { color: var(--red); }
+  .section-var.na  { color: var(--text-muted); }
+
+  /* ── BARS ── */
   .bars-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -238,7 +240,7 @@
 
   .bars-grid {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: flex-end;
     height: 110px;
     width: max-content;
@@ -252,7 +254,7 @@
     gap: 5px;
     height: 100%;
     justify-content: flex-end;
-    width: 42px;
+    width: 44px;
     flex-shrink: 0;
   }
 
@@ -272,45 +274,50 @@
   }
   .bar-pct.pos { color: var(--green); }
   .bar-pct.neg { color: var(--red); }
-  .bar-pct.na  { color: var(--text-muted); }
+  .bar-pct.na  { color: var(--bar-neutral); }
 
   .bar-visual {
     width: 100%;
     min-height: 3px;
     border-radius: 3px 3px 0 0;
   }
-  .bar-visual.pos { background: var(--green); }
-  .bar-visual.neg { background: var(--red); opacity: 0.85; }
-  .bar-visual.na  { background: var(--bar-neutral); }
+  .bar-visual.purple-pos { background: var(--purple); }
+  .bar-visual.purple-neg { background: var(--red); opacity: 0.85; }
+  .bar-visual.blue-pos   { background: var(--blue); }
+  .bar-visual.blue-neg   { background: var(--red); opacity: 0.85; }
+  .bar-visual.orange-pos { background: var(--orange); }
+  .bar-visual.orange-neg { background: var(--red); opacity: 0.85; }
+  .bar-visual.na         { background: var(--bar-neutral); }
 
-  .no-prev {
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0 28px;
+  }
+
+  .no-data {
     color: var(--text-muted);
     font-size: 13px;
-    padding: 24px 0;
+    padding: 16px 0;
     font-style: italic;
     opacity: 0.6;
   }
 
-  /* ── DESKTOP overrides (keep usable on wider screens too) ─ */
+  /* ── DESKTOP ── */
   @media (min-width: 600px) {
-    .header { padding: 32px 36px 0; }
-    .main { padding: 32px 36px 48px; }
+    .header { padding: 28px 36px 0; }
+    .main { padding: 28px 36px 0; }
     .tabs-wrap { margin: 0 -36px; padding: 0 36px; }
     .bars-scroll { margin: 0 -36px; padding: 0 36px 4px; }
-    h1 { font-size: 28px; white-space: normal; }
-    .kpi-value { font-size: 28px; }
-    .chart-wrap { height: 280px; }
-    .bar-col { width: 52px; }
+    h1 { font-size: 24px; }
   }
-
   @media (min-width: 900px) {
-    .header { padding: 40px 48px 0; position: static; }
-    .main { padding: 40px 48px 60px; }
+    .header { padding: 36px 48px 0; position: static; }
+    .main { padding: 36px 48px 0; }
     .tabs-wrap { margin: 0 -48px; padding: 0 48px; }
     .bars-scroll { overflow-x: visible; margin: 0; padding: 0; }
-    .bars-grid { width: auto; min-width: auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; }
+    .bars-grid { width: auto; min-width: auto; display: grid; grid-template-columns: repeat(12,1fr); gap: 6px; }
     .bar-col { width: auto; }
-    .chart-wrap { height: 300px; }
   }
 </style>
 </head>
@@ -321,14 +328,14 @@
     <div class="title-block">
       <div class="site-name">Dashboard Trafic</div>
       <h1>CC <strong>MoléonLangon</strong></h1>
+      <div class="badge">Source : MyTraffic</div>
     </div>
     <div class="kpi-pill">
-      <div class="kpi-label">Total <span id="year-range-label">—</span></div>
-      <div class="kpi-value" id="total-display">—</div>
-      <div class="kpi-sub" id="total-sub-display"></div>
+      <div class="kpi-label">Site complet <span id="year-label">—</span></div>
+      <div class="kpi-value" id="kpi-total">—</div>
+      <div class="kpi-sub" id="kpi-sub">—</div>
     </div>
   </div>
-
   <div class="tabs-wrap">
     <div class="tabs" id="tabs"></div>
   </div>
@@ -340,41 +347,194 @@
     <span id="partial-text"></span>
   </div>
 
-  <div class="chart-wrap">
-    <canvas id="mainChart"></canvas>
+  <!-- 1. SITE COMPLET -->
+  <div class="histo-block">
+    <div class="section-header">
+      <div class="section-dot purple"></div>
+      <div class="section-name">Site complet</div>
+      <div class="section-total-pill" id="total-site">—</div>
+      <div class="section-var na" id="var-site">—</div>
+    </div>
+    <div class="bars-scroll"><div class="bars-grid" id="bars-site"></div></div>
   </div>
 
-  <div id="variation-section"></div>
+  <div class="divider"></div>
+
+  <!-- 2. GALERIE + PROMENADE -->
+  <div class="histo-block">
+    <div class="section-header">
+      <div class="section-dot blue"></div>
+      <div class="section-name">Galerie &amp; Promenade</div>
+      <div class="section-total-pill" id="total-gal">—</div>
+      <div class="section-var na" id="var-gal">—</div>
+    </div>
+    <div id="gal-content">
+      <div class="bars-scroll"><div class="bars-grid" id="bars-gal"></div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 3. RETAIL SEUL -->
+  <div class="histo-block">
+    <div class="section-header">
+      <div class="section-dot orange"></div>
+      <div class="section-name">Retail seul</div>
+      <div class="section-total-pill" id="total-retail">—</div>
+      <div class="section-var na" id="var-retail">—</div>
+    </div>
+    <div id="retail-content">
+      <div class="bars-scroll"><div class="bars-grid" id="bars-retail"></div></div>
+    </div>
+  </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-const rawMonthly = {
+// ── DATA ──────────────────────────────────────────────────────────────────────
+// File 1 = Retail Park = SITE COMPLET
+const siteMonthly = {
+  2020: [284900,302900,211500,159200,262300,295100,308800,292100,286700,266500,151400,276800],
+  2021: [162500,145800,219700,190600,209600,256200,236600,223300,287400,294100,307200,367000],
+  2022: [334000,315400,349100,348900,351100,343600,383400,376000,375600,391900,377200,531100],
+  2023: [384600,373200,405200,427700,428900,429100,451300,443700,389800,434700,427000,575000],
+  2024: [409600,368600,389200,378600,396000,407400,431400,446300,433500,417200,444700,547700],
+  2025: [425200,373300,386400,385800,416400,412600,433800,444100,407600,420600,420400,517600],
+  2026: [435000,367300,385500,401500,397400,437900,463900,null,null,null,null,null]
+};
+
+// File 2 = Galerie + Promenade only
+const galMonthly = {
   2023: [null,null,null,null,null,null,null,null,304400,339700,287300,428700],
   2024: [274900,240600,252700,234800,255900,265600,290200,306600,300400,294900,313500,414100],
   2025: [296400,254200,259800,249400,277500,273200,298000,298600,277700,301100,293700,389200],
   2026: [308100,278100,264800,274900,275400,296200,318800,null,null,null,null,null]
 };
 
+// Retail seul = site - gal (computed)
+const retailMonthly = {
+  2023: [null,null,null,null,null,null,null,null,85400,95000,139700,146300],
+  2024: [134700,128000,136500,143800,140100,141800,141200,139700,133100,122300,131200,133600],
+  2025: [128800,119100,126600,136400,138900,139400,135800,145500,129900,119500,126700,128400],
+  2026: [126900,89200,120700,126600,122000,141700,145100,null,null,null,null,null]
+};
+
 const months = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
-const years  = [2023,2024,2025,2026];
+const years  = [2020,2021,2022,2023,2024,2025,2026];
 let currentYear = 2026;
-let chartInstance = null;
 
-function totalForYear(y) {
-  return (rawMonthly[y]||[]).filter(v=>v!=null).reduce((a,b)=>a+b,0);
-}
-function pct(c,p) {
-  if(c==null||p==null||p===0) return null;
-  return ((c-p)/p)*100;
-}
-function yearRange(y) {
-  const d = rawMonthly[y]||[];
-  const indices = d.map((v,i)=>v!=null?i:-1).filter(i=>i>=0);
-  return { first: months[indices[0]], last: months[indices[indices.length-1]], count: indices.length };
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function sum(arr) { return (arr||[]).filter(v=>v!=null).reduce((a,b)=>a+b,0); }
+function pct(c,p) { if(c==null||p==null||p===0) return null; return ((c-p)/p)*100; }
+function fmt(n)   { return n ? n.toLocaleString('fr-FR') : '—'; }
+
+function yearRange(data) {
+  const idx = (data||[]).map((v,i)=>v!=null?i:-1).filter(i=>i>=0);
+  if(!idx.length) return null;
+  return { first: months[idx[0]], last: months[idx[idx.length-1]], count: idx.length };
 }
 
-// ── TABS
+function globalVar(curr, prev) {
+  if(!prev) return null;
+  let sc=0, sp=0;
+  (curr||[]).forEach((v,i)=>{ if(v!=null && prev[i]!=null){ sc+=v; sp+=prev[i]; } });
+  return sp>0 ? ((sc-sp)/sp)*100 : null;
+}
+
+// ── SECTION PILL ──────────────────────────────────────────────────────────────
+function updatePill(totalId, varId, curr, prev) {
+  const total = sum(curr);
+  document.getElementById(totalId).textContent = total ? fmt(total) : '—';
+
+  const v = globalVar(curr, prev);
+  const el = document.getElementById(varId);
+  if(v == null) {
+    el.textContent = '—'; el.className = 'section-var na';
+  } else {
+    const sign = v>=0?'+':'';
+    el.textContent = sign+v.toFixed(1)+'% vs '+(currentYear-1);
+    el.className = 'section-var '+(v>=0?'pos':'neg');
+  }
+}
+
+// ── BUILD HISTOGRAM ───────────────────────────────────────────────────────────
+function buildHisto(gridId, curr, prev, color) {
+  const grid = document.getElementById(gridId);
+  if(!grid) return;
+  grid.innerHTML = '';
+
+  const pcts = (curr||Array(12).fill(null)).map((v,i)=>{
+    if(v==null) return null;
+    return (prev && prev[i]!=null) ? pct(v, prev[i]) : null;
+  });
+
+  const valid = pcts.filter(p=>p!=null);
+  const maxAbs = Math.max(...valid.map(Math.abs), 0.1);
+  const BAR_MAX = 62;
+
+  months.forEach((m,i) => {
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+
+    const p = pcts[i];
+    const pctEl = document.createElement('div');
+    const barEl = document.createElement('div');
+    barEl.className = 'bar-visual';
+
+    if(p == null) {
+      pctEl.className = 'bar-pct na'; pctEl.textContent = '—';
+      barEl.classList.add('na'); barEl.style.height = '3px';
+    } else {
+      const sign = p>=0?'+':''; const cls = p>=0?'pos':'neg';
+      pctEl.className = 'bar-pct '+cls;
+      pctEl.textContent = sign+p.toFixed(1)+'%';
+      barEl.classList.add(`${color}-${cls}`);
+      barEl.style.height = Math.max(3,Math.round((Math.abs(p)/maxAbs)*BAR_MAX))+'px';
+    }
+
+    const lbl = document.createElement('div');
+    lbl.className = 'bar-label'; lbl.textContent = m;
+
+    col.appendChild(pctEl); col.appendChild(barEl); col.appendChild(lbl);
+    grid.appendChild(col);
+  });
+}
+
+// ── BUILD SECTION with optional "no data" fallback ────────────────────────────
+function buildSection(contentId, gridId, curr, prev, color) {
+  const container = document.getElementById(contentId);
+  const hasData = curr && curr.some(v=>v!=null);
+  if(!hasData) {
+    container.innerHTML = '<div class="no-data">Données non disponibles pour cette année.</div>';
+    return;
+  }
+  container.innerHTML = `<div class="bars-scroll"><div class="bars-grid" id="${gridId}"></div></div>`;
+  buildHisto(gridId, curr, prev, color);
+}
+
+// ── KPI ───────────────────────────────────────────────────────────────────────
+function updateKPI(y) {
+  // Use site complet for total; fall back to gal if no site data
+  const curr = siteMonthly[y] || galMonthly[y] || Array(12).fill(null);
+  const range = yearRange(curr);
+  const isPartial = range && range.count < 12;
+  const total = sum(curr);
+
+  document.getElementById('year-label').textContent = y;
+  document.getElementById('kpi-total').textContent  = fmt(total);
+  document.getElementById('kpi-sub').textContent    =
+    range ? (isPartial ? `${range.first}–${range.last} · partiel` : 'Jan–Déc') : '—';
+
+  const notice = document.getElementById('partial-notice');
+  if(isPartial && range) {
+    notice.classList.add('show');
+    document.getElementById('partial-text').textContent =
+      `Données de ${range.first} à ${range.last} ${y} (${range.count}/12 mois)`;
+  } else {
+    notice.classList.remove('show');
+  }
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
 function buildTabs() {
   const c = document.getElementById('tabs');
   years.forEach(y => {
@@ -391,137 +551,31 @@ function selectYear(y) {
   render();
 }
 
-// ── CHART
-function buildChart(y) {
-  const data=rawMonthly[y], labels=[], values=[];
-  data.forEach((v,i)=>{ if(v!=null){labels.push(months[i]);values.push(v);} });
-  const ctx=document.getElementById('mainChart').getContext('2d');
-  const grad=ctx.createLinearGradient(0,0,0,280);
-  grad.addColorStop(0,'rgba(88,166,255,0.2)');
-  grad.addColorStop(1,'rgba(88,166,255,0)');
-  if(chartInstance) chartInstance.destroy();
-  chartInstance = new Chart(ctx,{
-    type:'line',
-    data:{ labels, datasets:[{
-      data: values,
-      borderColor:'#58a6ff',
-      backgroundColor: grad,
-      borderWidth: 2,
-      pointRadius: 5,
-      pointBackgroundColor:'#58a6ff',
-      pointBorderColor:'#0d1117',
-      pointBorderWidth: 2,
-      pointHoverRadius: 5,
-      fill: true,
-      tension: 0.35
-    }]},
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{enabled:false} },
-      scales:{
-        x:{
-          grid:{color:'rgba(255,255,255,0.04)',drawTicks:false},
-          border:{display:false},
-          ticks:{color:'#7d8590',font:{family:'DM Sans',size:11},padding:6,maxRotation:0}
-        },
-        y:{
-          grid:{color:'rgba(255,255,255,0.04)',drawTicks:false},
-          border:{display:false},
-          ticks:{
-            color:'#7d8590',
-            font:{family:'DM Mono',size:11},
-            padding:10,
-            maxTicksLimit:5,
-            callback:v=>(v>=1000?(v/1000).toFixed(0)+' k':v)
-          }
-        }
-      }
-    }
-  });
-}
-
-// ── VARIATION BARS
-function buildVariations(y) {
-  const section = document.getElementById('variation-section');
-  section.innerHTML='';
-  const prevY=y-1;
-  if(!rawMonthly[prevY]) {
-    section.innerHTML='<div class="no-prev">Pas d\'année précédente disponible.</div>';
-    return;
-  }
-  const curr=rawMonthly[y], prev=rawMonthly[prevY];
-  const pcts=curr.map((v,i)=>(v==null||prev[i]==null)?null:pct(v,prev[i]));
-  const valid=pcts.filter(p=>p!=null);
-  if(!valid.length) {
-    section.innerHTML='<div class="no-prev">Aucun mois comparable avec l\'année précédente.</div>';
-    return;
-  }
-
-  const maxAbs=Math.max(...valid.map(Math.abs),1);
-  const BAR_MAX=60;
-
-  const title=document.createElement('div');
-  title.className='variation-title';
-  title.innerHTML=`Variation vs <em>${prevY}</em>`;
-  section.appendChild(title);
-
-  const scroll=document.createElement('div');
-  scroll.className='bars-scroll';
-  const grid=document.createElement('div');
-  grid.className='bars-grid';
-
-  months.forEach((m,i)=>{
-    const col=document.createElement('div');
-    col.className='bar-col';
-    const p=pcts[i];
-    const pctEl=document.createElement('div');
-    const barEl=document.createElement('div');
-    barEl.className='bar-visual';
-    if(p==null){
-      pctEl.className='bar-pct na'; pctEl.textContent='—';
-      barEl.classList.add('na'); barEl.style.height='3px';
-    } else {
-      const sign=p>=0?'+':'';
-      const cls=p>=0?'pos':'neg';
-      pctEl.className='bar-pct '+cls;
-      pctEl.textContent=sign+p.toFixed(1)+'%';
-      barEl.classList.add(cls);
-      barEl.style.height=Math.max(3,Math.round((Math.abs(p)/maxAbs)*BAR_MAX))+'px';
-    }
-    const lbl=document.createElement('div');
-    lbl.className='bar-label'; lbl.textContent=m;
-    col.appendChild(pctEl); col.appendChild(barEl); col.appendChild(lbl);
-    grid.appendChild(col);
-  });
-
-  scroll.appendChild(grid);
-  section.appendChild(scroll);
-}
-
-// ── HEADER
-function updateHeader(y) {
-  const total=totalForYear(y);
-  const {first,last,count}=yearRange(y);
-  const isPartial=count<12;
-  document.getElementById('year-range-label').textContent=y;
-  document.getElementById('total-display').textContent=total.toLocaleString('fr-FR');
-  document.getElementById('total-sub-display').textContent=
-    isPartial?`${first}–${last} · partiel`:`Jan–Déc`;
-  const notice=document.getElementById('partial-notice');
-  if(isPartial){
-    notice.classList.add('show');
-    document.getElementById('partial-text').textContent=
-      `Données de ${first} à ${last} ${y} (${count}/12 mois)`;
-  } else {
-    notice.classList.remove('show');
-  }
-}
-
+// ── RENDER ────────────────────────────────────────────────────────────────────
 function render() {
-  updateHeader(currentYear);
-  buildChart(currentYear);
-  buildVariations(currentYear);
+  const y    = currentYear;
+  const prev = y - 1;
+
+  const sCurr = siteMonthly[y]   || null;
+  const sPrev = siteMonthly[prev] || null;
+  const gCurr = galMonthly[y]    || null;
+  const gPrev = galMonthly[prev]  || null;
+  const rCurr = retailMonthly[y]  || null;
+  const rPrev = retailMonthly[prev] || null;
+
+  updateKPI(y);
+
+  // Site complet
+  updatePill('total-site','var-site', sCurr, sPrev);
+  buildSection('bars-site','bars-site-grid', sCurr, sPrev, 'purple');
+
+  // Galerie + Promenade
+  updatePill('total-gal','var-gal', gCurr, gPrev);
+  buildSection('gal-content','bars-gal-grid', gCurr, gPrev, 'blue');
+
+  // Retail seul
+  updatePill('total-retail','var-retail', rCurr, rPrev);
+  buildSection('retail-content','bars-retail-grid', rCurr, rPrev, 'orange');
 }
 
 buildTabs();
