@@ -373,20 +373,7 @@
     </div>
   </div>
 
-  <div class="divider"></div>
 
-  <!-- 3. RETAIL SEUL -->
-  <div class="histo-block">
-    <div class="section-header">
-      <div class="section-dot orange"></div>
-      <div class="section-name">Retail seul</div>
-      <div class="section-total-pill" id="total-retail">—</div>
-      <div class="section-var na" id="var-retail">—</div>
-    </div>
-    <div id="retail-content">
-      <div class="bars-scroll"><div class="bars-grid" id="bars-retail"></div></div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -410,13 +397,7 @@ const galMonthly = {
   2026: [308100,278100,264800,274900,275400,296200,318800,null,null,null,null,null]
 };
 
-// Retail seul = site - gal (computed)
-const retailMonthly = {
-  2023: [null,null,null,null,null,null,null,null,85400,95000,139700,146300],
-  2024: [134700,128000,136500,143800,140100,141800,141200,139700,133100,122300,131200,133600],
-  2025: [128800,119100,126600,136400,138900,139400,135800,145500,129900,119500,126700,128400],
-  2026: [126900,89200,120700,126600,122000,141700,145100,null,null,null,null,null]
-};
+
 
 const months = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
 const years  = [2020,2021,2022,2023,2024,2025,2026];
@@ -560,9 +541,6 @@ function render() {
   const sPrev = siteMonthly[prev] || null;
   const gCurr = galMonthly[y]    || null;
   const gPrev = galMonthly[prev]  || null;
-  const rCurr = retailMonthly[y]  || null;
-  const rPrev = retailMonthly[prev] || null;
-
   updateKPI(y);
 
   // Site complet
@@ -572,10 +550,6 @@ function render() {
   // Galerie + Promenade
   updatePill('total-gal','var-gal', gCurr, gPrev);
   buildSection('gal-content','bars-gal-grid', gCurr, gPrev, 'blue');
-
-  // Retail seul
-  updatePill('total-retail','var-retail', rCurr, rPrev);
-  buildSection('retail-content','bars-retail-grid', rCurr, rPrev, 'orange');
 }
 
 buildTabs();
